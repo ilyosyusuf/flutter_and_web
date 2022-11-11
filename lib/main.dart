@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:webview_flutter_plus/webview_flutter_plus.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,7 +15,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         primarySwatch: Colors.blue,
       ),
       home: MyHomePage(title: 'Flutter Demo Home Page'),
@@ -35,31 +39,39 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  late WebViewPlusController webViewController;
+  // String filePath = 'assets/files/index.html';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
+      body: WebViewPlus(
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: 'assets/files/index.html',
+        onWebViewCreated: (webViewController) {
+          this.webViewController = webViewController;
+          // _webViewController = webViewController;
+          // _loadHtmlFromAssets();
+        },
+        
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), 
     );
   }
+
+  // _loadHtmlFromAssets() async {
+  //   String fileHtmlContents = await rootBundle.loadString(filePath);
+  //   _webViewController.loadUrl(Uri.dataFromString(fileHtmlContents,
+  //           mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+  //       .toString());
+  // }
+
 }
